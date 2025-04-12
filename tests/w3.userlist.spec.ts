@@ -5,10 +5,10 @@ import { UserListPage } from './pages/UserListPage';
 import { EmployeeListPage } from './pages/EmployeeListPage';
 import { UserAddPage } from './pages/UserAddPage';
 
-test.describe('E2E Test Suite', () => {
+test.describe('E2E Test User access PIM', () => {
   test.beforeEach(async ({ page}) => {
   })
-  test('Verify user can login', async ({ page }) => {
+  test('Verify Employee list page', async ({ page }) => {
     const loginPage = new LoginPage(page);
     await loginPage.goto();
     await loginPage.login('Army1', 'Admin@1234');
@@ -18,19 +18,23 @@ test.describe('E2E Test Suite', () => {
     // const userListPage = new UserListPage(page);
 
     const employeeListPage = new EmployeeListPage(page);
-
-    
     await employeeListPage.isLoaded();
 
     await employeeListPage.selectEmployeeName('Monika  Army');
-    // sai --- await employeeListPage.verifyDropdown('Employment Status', ['Select', 'Enabled', 'ds']);
-    
-    // Pass  --- await employeeListPage.selectDropdown('Employment Status', '-- Select --');
+   
+    await employeeListPage.employeeId.fill('0013');
+    await employeeListPage.selectDropdown('Employment Status', '-- Select --');
+  
     await employeeListPage.selectDropdown('Include', 'Current and Past Employees');
+    await employeeListPage.verifyDropdown('Include', ['Current Employees Only', 'Current and Past Employees', 'Past Employees Only']);
     
-    // await employeeListPage.selectDropdown('Status', 'Enabled');
+    
     await employeeListPage.searchButton.click();
-    // await employeeListPage.userTableRows.first().waitFor({ state: 'visible' });
-    // await employeeListPage.clickEditButtonFor('admin1');
+
+    await employeeListPage.employeeTableRows.first().waitFor({ state: 'visible' });
+    await employeeListPage.clickEditButtonFor('0013');
+
+    await page.close();
+    
   })
 })

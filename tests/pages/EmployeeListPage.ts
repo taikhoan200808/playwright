@@ -6,9 +6,15 @@ export class EmployeeListPage extends BasePage {
     super(page);
   }
 
+  get headingAddUser() {
+    return this.container.getByRole('heading', { name: 'PIM' })
+  }
+
   get addButton() {
     return this.container.getByRole('button', { name: 'Add' });
   }
+
+
 
   getEmployeeName(nameText: string): Locator {
     return this.container.getByText('Employee Name')
@@ -18,7 +24,7 @@ export class EmployeeListPage extends BasePage {
   }
 
   getEmployeeNameOption(nameText: string): Locator {
-    return this.container.getByText('Employee Name')
+    return this.container.getByText('Employee Information')
       .locator('..').locator('..').locator('..')
       .getByRole('option', { name: nameText })
       .first();
@@ -29,8 +35,8 @@ export class EmployeeListPage extends BasePage {
     await this.getEmployeeNameOption(nameText).click();
   }
 
-  get username(){
-    return this.container.getByText('Username')
+  get employeeId(){
+    return this.container.getByText('Employee Id')
       .locator('..').locator('..').locator('..')
       .getByRole('textbox').first();
   }
@@ -39,7 +45,7 @@ export class EmployeeListPage extends BasePage {
     return this.container.getByRole('button', { name: 'Search' });
   }
 
-  get userTableRows() {
+  get employeeTableRows() {
     return this.container.locator('.oxd-table-body .oxd-table-row');
   }
 
@@ -87,7 +93,10 @@ export class EmployeeListPage extends BasePage {
       'Admin': 'Admin',
       'ESS': 'ESS',
       'ds': 'ds',
-      'Current and Past Employees': 'Current and Past Employees'
+
+      'Current Employees Only': 'Current Employees Only',
+      'Current and Past Employees': 'Current and Past Employees',
+      'Past Employees Only':'Past Employees Only',
     };
 
     const visibleOptions = expectedOptions.map(opt => optionMap[opt] ?? opt);
@@ -104,24 +113,23 @@ export class EmployeeListPage extends BasePage {
   async isLoaded() {
     await this.page.waitForLoadState('load');
     await this.addButton.waitFor({ state: 'visible' });
-    await this.verifyModuleTitle('Admin');
-    await this.verifyPageTitle('/ User Management');
+    await this.verifyModuleTitle('PIM');
+    // await this.verifyPageTitle('/ User Management');
   }
   
-  async clickEditButtonFor(username: string) {
+  async clickEditButtonFor(id: string) {
     const row = this.container.locator(
-      `.oxd-table-body .oxd-table-row:has-text("${username}")`
+      `.oxd-table-body .oxd-table-row:has-text("${id}")`
     );
     await row.locator('i.bi-pencil-fill').click();
   }
 
-  async verifyUserInTable(username: string, userRole: string, employeeName: string, status: string) {
+  async verifyEmployeeInTable(id: string, firstName: string, lastName: string) {
     const row = this.container.locator(
-      `.oxd-table-body .oxd-table-row:has-text("${username}")`
+      `.oxd-table-body .oxd-table-row:has-text("${id}")`
     );
-    await expect(row.locator('div').nth(1)).toHaveText(username);
-    await expect(row.locator('div').nth(2)).toHaveText(userRole);
-    await expect(row.locator('div').nth(3)).toHaveText(employeeName);
-    await expect(row.locator('div').nth(4)).toHaveText(status);
+    await expect(row.locator('div').nth(1)).toHaveText(id);
+    await expect(row.locator('div').nth(2)).toHaveText(firstName);
+    await expect(row.locator('div').nth(3)).toHaveText(lastName);
   }
 }
