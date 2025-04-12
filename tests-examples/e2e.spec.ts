@@ -1,8 +1,8 @@
 import { test } from '@playwright/test';
-import { LoginPage } from './pages/LoginPage';
-import { DashboardPage } from './pages/DashboardPage';
-import { UserListPage } from './pages/UserListPage';
-import { UserAddPage } from './pages/UserAddPage';
+import { LoginPage } from '../tests/pages/LoginPage';
+import { DashboardPage } from '../tests/pages/DashboardPage';
+import { UserListPage } from '../tests/pages/UserListPage';
+import { UserAddPage } from '../tests/pages/UserAddPage';
 
 test.describe('E2E Test Suite', () => {
   test.beforeEach(async ({ page}) => {
