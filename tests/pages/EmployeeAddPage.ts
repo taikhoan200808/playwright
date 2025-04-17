@@ -7,12 +7,11 @@ export class EmployeeListPage extends BasePage {
   }
 
   get headingAddUser() {
-    return this.container.getByRole('heading', { name: 'PIM' })
+    return this.container.getByRole('heading', { name: 'Add Employee' })
   }
 
-  get addButton() {
-    return this.container.getByRole('button', { name: 'Add' });
-  }
+  get displaytext
+  page.locator('form')
 
 
 
@@ -132,8 +131,4 @@ export class EmployeeListPage extends BasePage {
     await expect(row.locator('div').nth(2)).toHaveText(firstName);
     await expect(row.locator('div').nth(3)).toHaveText(lastName);
   }
-
-
-  
-
 }
