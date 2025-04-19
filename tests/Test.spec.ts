@@ -10,11 +10,11 @@ test('test', async ({ page }) => {
   await page.getByRole('button', { name: 'Login' }).click();
   await page.getByRole('link', { name: 'PIM' }).click();
   await page.getByRole('button', { name: ' Add' }).click();
-  await page.getByRole('button', { name: '' }).click();
+  // await page.getByRole('button', { name: '' }).click();
   // await page.locator('input[type="file"]').setInputFiles('Army.png');
 
   // Select one file
-await page.locator('input[type="file"]').setInputFiles(path.join('C:\Users\wwwqw\Downloads', 'Army.png'));
+await page.locator('input[type="file"]').setInputFiles(path.join('./Data', '1.png'));
 // await page.getByLabel('Upload file').setInputFiles(path.join(__dirname, 'myfile.pdf'));
 
 });

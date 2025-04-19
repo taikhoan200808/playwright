@@ -1,7 +1,7 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from './BasePage';
 
-export class EmployeeListPage extends BasePage {
+export class EmployeeAddPage extends BasePage {
   constructor(page: Page) {
     super(page);
   }
@@ -10,125 +10,43 @@ export class EmployeeListPage extends BasePage {
     return this.container.getByRole('heading', { name: 'Add Employee' })
   }
 
-  get displaytext
-  page.locator('form')
 
-
-
-  getEmployeeName(nameText: string): Locator {
-    return this.container.getByText('Employee Name')
-      .locator('..').locator('..').locator('..')
-      .getByRole('textbox')
-      .first();
-  }
-
-  getEmployeeNameOption(nameText: string): Locator {
-    return this.container.getByText('Employee Information')
-      .locator('..').locator('..').locator('..')
-      .getByRole('option', { name: nameText })
-      .first();
-  }
-
-  async selectEmployeeName(nameText: string) {
-    await this.getEmployeeName(nameText).fill(nameText);
-    await this.getEmployeeNameOption(nameText).click();
-  }
-
-  get employeeId(){
-    return this.container.getByText('Employee Id')
+  get firstName(){
+    return this.container.getByText('Employee Full Name')
       .locator('..').locator('..').locator('..')
       .getByRole('textbox').first();
   }
 
-  get searchButton() {
-    return this.container.getByRole('button', { name: 'Search' });
-  }
-
-  get employeeTableRows() {
-    return this.container.locator('.oxd-table-body .oxd-table-row');
-  }
-
-  getDropdown(labelText: string): Locator {
-    return this.container.getByText(labelText)
+  get lastName(){
+    return this.container.getByText('Employee Full Name')
       .locator('..').locator('..').locator('..')
-      .locator('.oxd-select-text')
-      .first();
+      .getByRole('textbox').nth(1);
   }
 
-  getRequiredFieldErrorMessage(labelText: string): Locator {
-    return this.container.getByText(labelText)
-      .locator('..').locator('..').locator('..')
-      .getByText('Required')
-      .first();
+ 
+
+  get saveButton() {
+    return this.container.getByRole('button', { name: 'Save' });
   }
-
-  async selectDropdown(labelText: string, option:string) {
-    await this.getDropdown(labelText).click();
-
-    const optionMap: Record<string, string> = {
-      'Select': '-- Select --',
-      'Admin': 'Admin',
-      'ESS': 'ESS',
-      'Enabled': 'Enabled',
-      'Disabled': 'Disabled',
-    };
-
-    const visibleOption = optionMap[option] ?? option;
-
-    await this.container.getByText(labelText)
-        .locator('..').locator('..').locator('..')
-        .getByRole('option', { name: visibleOption }).click();
-  }
-
-  async verifyDropdown(labelText: string, expectedOptions: string[]): Promise<void> {
-    const dropdown = this.getDropdown(labelText);
-    await dropdown.click();
-
-    // Mapping for visible values if needed
-    const optionMap: Record<string, string> = {
-      'Select': '-- Select --',
-      'Enabled': 'Enabled',
-      'Disabled': 'Disabled',
-      'Admin': 'Admin',
-      'ESS': 'ESS',
-      'ds': 'ds',
-
-      'Current Employees Only': 'Current Employees Only',
-      'Current and Past Employees': 'Current and Past Employees',
-      'Past Employees Only':'Past Employees Only',
-    };
-
-    const visibleOptions = expectedOptions.map(opt => optionMap[opt] ?? opt);
-
-    for (const option of visibleOptions) {
-      const optionLocator = this.container.getByRole('option', { name: option });
-      await expect(optionLocator).toBeVisible(); // Requires `@playwright/test`
-    }
-
-    // Optional: close the dropdown if needed
-    await dropdown.press('Escape');
+  
+  async checkStatusButtonsave() {
+    // Check if the search button is enabled
+    const isEnabled = await this.saveButton.isEnabled();
+    console.log(`Button is enabled: ${isEnabled}`);
+  
+    // Check if the search button is disabled
+    const isDisabled = await this.saveButton.isDisabled();
+    console.log(`Button is disabled: ${isDisabled}`);
+  
+    // Verify the button's state using an assertion
+    // You can customize the expected state here
+    expect(isEnabled).toBe(true); // Change to `false` if testing for a disabled state
   }
 
   async isLoaded() {
     await this.page.waitForLoadState('load');
-    await this.addButton.waitFor({ state: 'visible' });
     await this.verifyModuleTitle('PIM');
     // await this.verifyPageTitle('/ User Management');
   }
   
-  async clickEditButtonFor(id: string) {
-    const row = this.container.locator(
-      `.oxd-table-body .oxd-table-row:has-text("${id}")`
-    );
-    await row.locator('i.bi-pencil-fill').click();
-  }
-
-  async verifyEmployeeInTable(id: string, firstName: string, lastName: string) {
-    const row = this.container.locator(
-      `.oxd-table-body .oxd-table-row:has-text("${id}")`
-    );
-    await expect(row.locator('div').nth(1)).toHaveText(id);
-    await expect(row.locator('div').nth(2)).toHaveText(firstName);
-    await expect(row.locator('div').nth(3)).toHaveText(lastName);
-  }
 }

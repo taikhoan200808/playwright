@@ -3,7 +3,8 @@ import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { UserListPage } from './pages/UserListPage';
 import { EmployeeListPage } from './pages/EmployeeListPage';
-import { UserAddPage } from './pages/UserAddPage';
+import { EmployeeAddPage } from './pages/EmployeeAddPage';
+import path from 'path';
 
 test.describe('E2E Test User access PIM', () => {
   test.beforeEach(async ({ page}) => {
@@ -19,22 +20,23 @@ test.describe('E2E Test User access PIM', () => {
 
     const employeeListPage = new EmployeeListPage(page);
     await employeeListPage.isLoaded();
+    await employeeListPage.addButton.click();
 
-    await employeeListPage.selectEmployeeName('Monika  Army');
-   
-    await employeeListPage.employeeId.fill('0013');
-    await employeeListPage.selectDropdown('Employment Status', '-- Select --');
-  
-    await employeeListPage.selectDropdown('Include', 'Current and Past Employees');
-    await employeeListPage.verifyDropdown('Include', ['Current Employees Only', 'Current and Past Employees', 'Past Employees Only']);
+
+    const employeeAddPage = new EmployeeAddPage(page);
+    await employeeAddPage.isLoaded();
+    await employeeAddPage.checkStatusButtonsave();
+    await employeeAddPage.verifyPageTitle('Add Employee');
+
+    await employeeAddPage.firstName.fill('Test frist Name');
+    await employeeAddPage.lastName.fill('Test Last Name');
     
+      // Upoad anh
+    await page.locator('input[type="file"]').setInputFiles(path.join('./Data', '1.png'));
     
-    await employeeListPage.searchButton.click();
+    await employeeAddPage.saveButton.click();
 
-    await employeeListPage.employeeTableRows.first().waitFor({ state: 'visible' });
-    await employeeListPage.clickEditButtonFor('0013');
-
-    await page.close();
+    // await page.close();
     
   })
 })
