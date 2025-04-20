@@ -28,13 +28,22 @@ test.describe('E2E Test User access PIM', () => {
     await employeeAddPage.checkStatusButtonsave();
     await employeeAddPage.verifyPageTitle('Add Employee');
 
-    await employeeAddPage.firstName.fill('Test frist Name');
-    await employeeAddPage.lastName.fill('Test Last Name');
+
+    await employeeAddPage.enterFirstName('111111111111111111111111111111111111111111');
+    await employeeAddPage.verifyFirstNameError('Should not exceed 30 characters');
+
+    await employeeAddPage.enterFirstName(' ');
+    await employeeAddPage.verifyFirstNameError('Required');
+
+    
+    await employeeAddPage.middletName.fill('Army');
+    await employeeAddPage.lastName.fill('01');
+    
     
       // Upoad anh
     await page.locator('input[type="file"]').setInputFiles(path.join('./Data', '1.png'));
     
-    await employeeAddPage.saveButton.click();
+    // await employeeAddPage.saveButton.click();
 
     // await page.close();
     
