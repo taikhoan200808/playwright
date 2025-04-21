@@ -1,39 +1,81 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from './BasePage';
 
-// export class EmployeeAddPage extends BasePage {
-
-//   constructor(page: Page) {
-//     super(page);
-
-//     }
-
-
 export class EmployeeAddPage extends BasePage {
   // Khai báo Locator cho trường "Firstname"
   readonly firstNameField: Locator;
+  readonly firstNameError: Locator;
+
+  readonly middleNameField: Locator;
+  readonly middleNameError: Locator;
+
+  readonly lastNameField: Locator;
+  readonly lastNameError: Locator;
+
+  readonly employeeID: Locator;
+  readonly employeeIDError: Locator;
 
   constructor(page: Page) {
     super(page);
 
     // Định nghĩa XPath cho trường "Firstname"
     this.firstNameField = page.locator('//input[@name="firstName"]'); 
-    // Thay đổi XPath dựa trên DOM của bạn
+    // Định nghĩa XPath cho trường firstName error:
+    this.firstNameError = page.locator('//input[@name="firstName"]//parent::*//parent::*//span[contains(@class, "oxd-input-field-error-message")]');
+
+    // Định nghĩa XPath cho trường "middleName"
+    this.middleNameField = page.locator('//input[@name="middleName"]'); 
+    // Định nghĩa XPath cho trường middleName error:
+    this.middleNameError = page.locator('//input[@name="middleName"]//parent::*//parent::*//span[contains(@class, "oxd-input-field-error-message")]');
+
+
+    // Định nghĩa XPath cho trường "lastNameField"
+    this.lastNameField = page.locator('//input[@name="lastName"]'); 
+    // Định nghĩa XPath cho trường lastNameField error:
+    this.lastNameError = page.locator('//input[@name="lastName"]//parent::*//parent::*//span[contains(@class, "oxd-input-field-error-message")]');
+
+
+
+    // Định nghĩa XPath cho trường Employee ID:
+    this.employeeID = page.locator('//*[text() = "Employee Id"]/parent::*//following-sibling::*//input');
+
+    // Định nghĩa XPath cho trường Employee Id error:
+    this.employeeIDError = page.locator('//*[text() = "Employee Id"]/parent::*//parent::*//span');
+
+    
+
+    
+
+
+    
   }
+
+
 
   // Thêm phương thức để tương tác với trường "Firstname"
   async enterFirstName(firstName: string): Promise<void> {
     await this.firstNameField.fill(firstName); // Nhập giá trị vào trường "Firstname"
   }
 
-  async verifyFirstNameError(expectedError: string): Promise<void> {
-    // const errorLocator = this.page.locator('//input[@id="firstName"]/following-sibling::span[contains(@class, "error-message")]');
+  // async verifyFirstNameError(expectedError: string): Promise<void> {
+  //   // const errorLocator = this.page.locator('//input[@id="firstName"]/following-sibling::span[contains(@class, "error-message")]');
     
-    const errorLocator = this.page.locator("//*[text() = 'Employee Full Name']/parent::*//following-sibling::*//span");
+  //   const errorLocator = this.page.locator("//*[text() = 'Employee Full Name']/parent::*//following-sibling::*//span");
    
-    await expect(errorLocator).toBeVisible(); // Kiểm tra mã lỗi hiển thị
-    const actualError = await errorLocator.textContent();
-    expect(actualError?.trim()).toBe(expectedError); // So sánh nội dung lỗi
+  //   await expect(errorLocator).toBeVisible(); // Kiểm tra mã lỗi hiển thị
+  //   const actualError = await errorLocator.textContent();
+  //   expect(actualError?.trim()).toBe(expectedError); // So sánh nội dung lỗi
+  // }
+
+
+  // Phương thức kiểm tra lỗi động cho bất kỳ trường nào
+  async verifyFieldError(fieldLocator: Locator, expectedError: string): Promise<void> {
+    // Kiểm tra mã lỗi hiển thị
+    await expect(fieldLocator).toBeVisible();
+    // Lấy nội dung mã lỗi
+    const actualError = await fieldLocator.textContent();
+    // So sánh nội dung mã lỗi với giá trị mong đợi
+    expect(actualError?.trim()).toBe(expectedError);
   }
 
   get headingAddUser() {
@@ -47,11 +89,6 @@ export class EmployeeAddPage extends BasePage {
       .getByRole('textbox').first();
   }
 
-  get firstName1(){
-    return this.container.getByText('Employee Full Name')
-      .locator('..').locator('..').locator('..')
-      .getByRole('textbox',{name:'firstName'});
-  }
 
   get middletName(){
     return this.container.getByText('Employee Full Name')
@@ -77,19 +114,6 @@ export class EmployeeAddPage extends BasePage {
       .first();
   }
 
-  getRequiredFieldErrorMessage30(labelText: string): Locator {
-    return this.container.getByText(labelText)
-      .locator('..').locator('..').locator('..')
-      .getByText('Should not exceed 30 characterszzz')
-      .first();
-  }
-
-  getRequiredFieldErrorMessage1(labelText: string): Locator {
-    return this.container.getByText(labelText)
-      .locator('..').locator('..').locator('..')
-      .getByText('Required')
-      .first();
-  }
 
   get saveButton() {
     return this.container.getByRole('button', { name: 'Save' });
