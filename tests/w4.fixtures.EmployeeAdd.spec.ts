@@ -1,6 +1,7 @@
 import path from 'path';
 import { expect, test } from './fixtures';
 
+//25/4
 //khac bai tuan 3 page => pages
 test.describe('E2E Test User access PIM', () => {
   test.beforeEach(async ({ pages}) => {
