@@ -1,7 +1,11 @@
 import path from 'path';
-import { expect, test } from './fixtures';
 
-//25/4
+import { expect, test } from './fixtures';
+import { Locator, Page } from '@playwright/test';
+
+
+
+
 //khac bai tuan 3 page => pages
 test.describe('E2E Test User access PIM', () => {
   test.beforeEach(async ({ pages}) => {
@@ -11,6 +15,8 @@ test.describe('E2E Test User access PIM', () => {
     await pages.loginPage.goto();
     await pages.loginPage.login('Army1', 'Admin@1234');
  
+
+
     await pages.dashboardPage.isLoaded();
     await pages.dashboardPage.goToMenu('PIM');
     
@@ -18,7 +24,9 @@ test.describe('E2E Test User access PIM', () => {
     await pages.employeeListPage.addButton.click();
 
 
-    
+
+
+
     await pages.employeeAddPage.isLoaded();
     await pages.employeeAddPage.checkStatusButtonsave();
     await pages.employeeAddPage.verifyPageTitle('Add Employee');
@@ -46,10 +54,15 @@ test.describe('E2E Test User access PIM', () => {
     await pages.employeeAddPage.enterFirstName('Monika');
     await pages.employeeAddPage.middletName.fill('Army');
     await pages.employeeAddPage.lastNameField.fill('214');
-    const fillEmployeeID = '250421';
-    await pages.employeeAddPage.employeeID.fill(fillEmployeeID);
+    // const fillEmployeeID = '250421';
+
+    const fillEmployeeID = await pages.utilities.getRandomNumber(500, 1000);
+    console.log('Random Employee ID:', fillEmployeeID.toString()); // In ra ID ngẫu nhiên
+
+  
+    await pages.employeeAddPage.employeeID.fill(fillEmployeeID.toString());
     
-    // await pages.employeeAddPage.saveButton.click();
+    await pages.employeeAddPage.saveButton.click();
 
  // Chờ heading với vai trò 'heading' và tên 'Personal Details' hiển thị
  const headingLocator = page.getByRole('heading', { name: 'Personal Details' });
@@ -61,9 +74,12 @@ test.describe('E2E Test User access PIM', () => {
 
     await page.getByRole('link', { name: 'Employee List' }).click();
     await page.getByRole('textbox').nth(2).click();
-    await page.getByRole('textbox').nth(2).fill(fillEmployeeID);
+    await page.getByRole('textbox').nth(2).fill(fillEmployeeID.toString());
     await page.getByRole('button', { name: 'Search' }).click();
-    await page.getByRole('button', { name: '' }).click();
+    
+    //delete employee
+    await pages.utilities.clickDeleteInableButtonFor(fillEmployeeID.toString());
+
     await page.getByRole('button', { name: ' Yes, Delete' }).click();
 
 
@@ -77,3 +93,4 @@ test.describe('E2E Test User access PIM', () => {
     
   })
 })
+

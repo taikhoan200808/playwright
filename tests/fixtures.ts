@@ -3,23 +3,23 @@ import { PageManager } from './utils/PageManager';
 import { MultiUserManager } from './utils/MultiUserManager';
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
-// import { MyInfoPage } from './pages/MyInfoPage';
 import { UserListPage } from './pages/UserListPage';
 import { UserAddPage } from './pages/UserAddPage';
 import { EmployeeAddPage } from './pages/EmployeeAddPage';
 import { EmployeeListPage } from './pages/EmployeeListPage';
+import { Utilities } from './utils/Utilities';
+
 
 export type PageFixtures = {
   pages: PageManager;
   multiUser: MultiUserManager;
   loginPage: LoginPage;
   dashboardPage: DashboardPage;
-//   myInfoPage: MyInfoPage;
   userListPage: UserListPage;
   userAddPage: UserAddPage;
   employeeAddPage: EmployeeAddPage;
   employeeListPage: EmployeeListPage;
-
+  utilities: Utilities;
 };
 
 export const test = baseTest.extend<PageFixtures>({
@@ -37,9 +37,7 @@ export const test = baseTest.extend<PageFixtures>({
   dashboardPage: async ({ pages }, use) => {
     await use(pages.dashboardPage);
   },
-//   myInfoPage: async ({ pages }, use) => {
-//     await use(pages.myInfoPage);
-//   },
+
   userListPage: async ({ pages }, use) => {
     await use(pages.userListPage);
   },
@@ -53,8 +51,10 @@ export const test = baseTest.extend<PageFixtures>({
   },
   employeeListPage: async ({ pages }, use) => {
     await use(pages.employeeListPage);
+  },
+  utilities: async ({ pages }, use) => {
+    await use(pages.utilities);
   }
-
 
 });
 

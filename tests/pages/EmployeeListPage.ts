@@ -124,6 +124,11 @@ export class EmployeeListPage extends BasePage {
     await row.locator('i.bi-pencil-fill').click();
   }
 
+
+ 
+
+
+
   async verifyEmployeeInTable(id: string, firstName: string, lastName: string) {
     const row = this.container.locator(
       `.oxd-table-body .oxd-table-row:has-text("${id}")`

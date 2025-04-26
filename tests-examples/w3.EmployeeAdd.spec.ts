@@ -1,9 +1,9 @@
 import { expect, test } from '@playwright/test';
-import { LoginPage } from './pages/LoginPage';
-import { DashboardPage } from './pages/DashboardPage';
-import { UserListPage } from './pages/UserListPage';
-import { EmployeeListPage } from './pages/EmployeeListPage';
-import { EmployeeAddPage } from './pages/EmployeeAddPage';
+import { LoginPage } from '../tests/pages/LoginPage';
+import { DashboardPage } from '../tests/pages/DashboardPage';
+import { UserListPage } from '../tests/pages/UserListPage';
+import { EmployeeListPage } from '../tests/pages/EmployeeListPage';
+import { EmployeeAddPage } from '../tests/pages/EmployeeAddPage';
 import path from 'path';
 
 test.describe('E2E Test User access PIM', () => {
