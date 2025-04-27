@@ -1,8 +1,8 @@
 import path from 'path';
 
-import { expect, test } from './fixtures';
+import { expect, test } from '../tests/fixtures';
 import { Locator, Page } from '@playwright/test';
-import { validateLinksFromLocator } from './utils/CheckLinks'; 
+import { validateLinksFromLocator } from '../tests/utils/CheckLinks'; 
 
 
 test.describe('E2E Test User access PIM', () => {
@@ -93,6 +93,10 @@ test.describe('E2E Test User access PIM', () => {
     await pages.utilities.clickDeleteInableButtonFor(fillEmployeeID.toString());
 
     await page.getByRole('button', { name: ' Yes, Delete' }).click();
+
+
+ 
+
 
     await page.close();
     
